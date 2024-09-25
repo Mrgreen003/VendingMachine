@@ -26,33 +26,37 @@ public class VendingMachineService extends Order {
 
 
 public String validateData(String orderId,String item,int orderQuantity) throws InvalidOrderException
-{   
-	if(orderQuantity<=-1 || orderQuantity>=11)
-    { 
-	  throw new InvalidOrderException(":neg");
-    }
-	else if (orderId==null) {
+{   boolean flag=true;
+	if (orderId==null) {
+		flag=false;
 		throw new InvalidOrderException(":null");
 	}
 	else if(orderId.length()!=5) {
+		flag=false;
 		throw new InvalidOrderException(":length");
 	}
 	else if(orderId.charAt(0)!='O'||orderId.charAt(1)!='R') {
+		flag=false;
 		throw new InvalidOrderException(":OR");
 		
 	}
+	else if(orderQuantity<=-1 || orderQuantity>=11)
+    { flag=false;
+	  throw new InvalidOrderException(":neg");
+    }
 	else if(orderId.charAt(0)=='O'||orderId.charAt(1)=='R')
   	{ 
 		try {
 			  int n=Integer.parseInt(orderId.substring(2, 5));
 		  }
 		  catch(Exception E){
-			  
+			  flag=false;
 			   throw new InvalidOrderException(":101");
 		  } 
 	}
 	
-	else {
+	
+	if(flag){
 		try {
 			if(checkInventoryStatus(item,orderQuantity)=="Item in Stock")
 			{
@@ -75,9 +79,9 @@ public String generateBill(Order order)
 }
 public String processOrder(String orderId,String item,int orderQuantity)
 {
-	try {
+	try{
 		if(validateData(orderId,item,orderQuantity)=="Valid")
-		{
+		{ 
 			Order order=new Order();
 			order.setOrderId(orderId);
 			order.setItem(item);
@@ -88,8 +92,7 @@ public String processOrder(String orderId,String item,int orderQuantity)
 	{
 		return e.getMessage();
 	}
-	
-	return null;
+	return "h";
 	}
 
 }
