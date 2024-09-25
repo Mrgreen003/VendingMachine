@@ -40,7 +40,7 @@ public class Order {
 	public void updateStock(String itemId,int quantity)
 	{ int i=0;
 	  do
-	  {
+	  { 
 		 if(stock[i].itemId==itemId)
 		 {
 			 stock[i].quantity-=quantity;
@@ -54,7 +54,7 @@ public class Order {
 	{
 		int i=0;
 		  do
-		  {
+		  { 
 			 if(stock[i].itemName==item)
 			 {
 				this.totalAmount= stock[i].price*this.orderQuantity;

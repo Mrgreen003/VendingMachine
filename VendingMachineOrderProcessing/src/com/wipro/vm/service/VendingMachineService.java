@@ -4,54 +4,54 @@ import com.wipro.vm.util.*;
 
 public class VendingMachineService extends Order {
 	
-	public String checkInventoryStatus(String item,int orderQuantity) throws ItemOutOfStockException
+	public String checkInventoryStatus(String item,int orderQuantity) throws ItemOutOfStockException, InvalidOrderException
 	{
 	  int i=0;
 	  do
-	  {
+	  {   
 		  if(Order.stock[i].getItemName()==item)
-		  {
+		  { 
 			  if(orderQuantity>Order.stock[i].getQuantity())
-			  {
-				  throw new ItemOutOfStockException();
+			  { 
+				 throw new InvalidOrderException("Out of Stock",true);
 			  }
 			  else if(orderQuantity<=Order.stock[i].getQuantity())
-			  {
+			  { 
 				  return "Item in Stock";
 			  }
 		  }
+		  i++;
 	  }while(i<Order.stock.length);
 	  return null;}
 
 
 public String validateData(String orderId,String item,int orderQuantity) throws InvalidOrderException
-{
-	if (orderId==null) {
-		throw new InvalidOrderException("null");
+{   
+	if(orderQuantity<=-1 || orderQuantity>=11)
+    { 
+	  throw new InvalidOrderException(":neg");
+    }
+	else if (orderId==null) {
+		throw new InvalidOrderException(":null");
 	}
 	else if(orderId.length()!=5) {
-		throw new InvalidOrderException("length");
+		throw new InvalidOrderException(":length");
 	}
 	else if(orderId.charAt(0)!='O'||orderId.charAt(1)!='R') {
-		throw new InvalidOrderException("or");
+		throw new InvalidOrderException(":OR");
 		
 	}
-	else if(orderId.substring(0,2)=="OR")
-  	{
+	else if(orderId.charAt(0)=='O'||orderId.charAt(1)=='R')
+  	{ 
 		try {
 			  int n=Integer.parseInt(orderId.substring(2, 5));
 		  }
 		  catch(Exception E){
-			  System.out.print(E);
-			   throw new InvalidOrderException("101");
-			   
-		  }
-  	}
+			  
+			   throw new InvalidOrderException(":101");
+		  } 
+	}
 	
-	else if(orderQuantity<0 && orderQuantity>10)
-    {
-	  throw new InvalidOrderException("neg");
-    }
 	else {
 		try {
 			if(checkInventoryStatus(item,orderQuantity)=="Item in Stock")
@@ -88,6 +88,7 @@ public String processOrder(String orderId,String item,int orderQuantity)
 	{
 		return e.getMessage();
 	}
+	
 	return null;
 	}
 

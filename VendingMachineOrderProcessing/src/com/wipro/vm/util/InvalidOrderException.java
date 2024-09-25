@@ -20,18 +20,18 @@ public class InvalidOrderException extends Throwable {
 	}
 
 	public InvalidOrderException(String message) {
-		super(message);
+		super("Invalid Order"+message);
 		
 	}
 
-	public InvalidOrderException(Throwable cause) {
-		super(cause);
+	public InvalidOrderException(String message,boolean b) {
+		super("Item Out Of Stock");
 		
 	}
 
 	@Override
 	public String toString() {
-		return "Invalid Order1";
+		return "Invalid Order";
 	}
 
 }
